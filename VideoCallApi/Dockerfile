@@ -11,7 +11,9 @@ RUN dotnet publish "VideoCallApi.csproj" -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
-EXPOSE 8080
-ENV ASPNETCORE_HTTP_PORTS=8080
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "VideoCallApi.dll"]
+
+# Use the PORT environment variable provided by Render or default to 8080
+ENV PORT=8080
+EXPOSE ${PORT}
+ENTRYPOINT ["sh", "-c", "dotnet VideoCallApi.dll --urls http://0.0.0.0:${PORT}"]
