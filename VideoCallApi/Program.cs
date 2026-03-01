@@ -11,10 +11,10 @@ builder.Services.AddHostedService(sp => sp.GetRequiredService<RoomService>());
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 
-// CORS — allow Angular dev server
+// CORS — allow Angular dev server and Firebase hosting
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
-        policy.WithOrigins("http://localhost:4200", "http://127.0.0.1:4200")
+        policy.WithOrigins("http://localhost:4200", "http://127.0.0.1:4200", "https://video-call-app-gkv00.web.app")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials()
@@ -32,10 +32,9 @@ app.MapHub<CallHub>("/callhub");
 app.Logger.LogInformation("""
     ===========================================
       HIPAA-Compliant Video Call Server
-      Listening on http://localhost:5000
       SignalR Hub: /callhub
       API: /api/room/create, /api/room/verify
     ===========================================
     """);
 
-app.Run("http://localhost:5000");
+app.Run();
