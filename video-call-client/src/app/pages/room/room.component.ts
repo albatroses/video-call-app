@@ -8,14 +8,68 @@ import { WebrtcService } from '../../services/webrtc.service';
   standalone: true,
   template: `
     <div class="room-container">
+      <!-- Pre-call Lobby Overlay -->
+      @if (isInLobby()) {
+        <div class="lobby-overlay">
+          <div class="lobby-card">
+            <h2>Ready to join?</h2>
+            <p>Check your camera and microphone before entering the room.</p>
+            
+            <div class="lobby-video-container">
+              <video #lobbyVideo autoplay playsinline muted></video>
+              @if (!isVideoEnabled()) {
+                <div class="no-video-overlay"><div class="avatar">Y</div></div>
+              }
+            </div>
+
+            <div class="lobby-controls">
+              <button class="control-btn" [class.off]="!isAudioEnabled()" (click)="toggleAudio()" title="Toggle Microphone">
+                @if (isAudioEnabled()) {
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/>
+                    <path d="M19 10v2a7 7 0 01-14 0v-2"/>
+                    <line x1="12" y1="19" x2="12" y2="23"/>
+                    <line x1="8" y1="23" x2="16" y2="23"/>
+                  </svg>
+                } @else {
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="1" y1="1" x2="23" y2="23"/>
+                    <path d="M9 9v3a3 3 0 005.12 2.12M15 9.34V4a3 3 0 00-5.94-.6"/>
+                    <path d="M17 16.95A7 7 0 015 12v-2m14 0v2c0 .76-.13 1.49-.35 2.17"/>
+                    <line x1="12" y1="19" x2="12" y2="23"/>
+                    <line x1="8" y1="23" x2="16" y2="23"/>
+                  </svg>
+                }
+              </button>
+
+              <button class="control-btn" [class.off]="!isVideoEnabled()" (click)="toggleVideo()" title="Toggle Camera">
+                @if (isVideoEnabled()) {
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 7l-7 5 7 5V7z"/>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                  </svg>
+                } @else {
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 16v1a2 2 0 01-2 2H3a2 2 0 01-2-2V7a2 2 0 012-2h2m5.66 0H14a2 2 0 012 2v3.34l1 1L23 7v10"/>
+                    <line x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                }
+              </button>
+            </div>
+            
+            <button class="join-btn" (click)="joinCall()">Join Now</button>
+          </div>
+        </div>
+      }
+
       <!-- Connection overlay -->
       @if (isConnecting()) {
         <div class="connecting-overlay">
           <div class="connecting-card">
             <div class="pulse-ring"></div>
             <div class="connecting-icon">📡</div>
-            <h2>Connecting...</h2>
-            <p>Setting up your encrypted connection</p>
+            <h2>{{ isInLobby() ? 'Getting Camera...' : 'Connecting...' }}</h2>
+            <p>{{ isInLobby() ? 'Please allow access to your camera and microphone' : 'Setting up your encrypted connection' }}</p>
           </div>
         </div>
       }
@@ -69,7 +123,7 @@ import { WebrtcService } from '../../services/webrtc.service';
         </div>
 
         <!-- Waiting state -->
-        @if (participantCount() < 2 && !isConnecting()) {
+        @if (participantCount() < 2 && !isConnecting() && !isInLobby()) {
           <div class="waiting-panel">
             <div class="waiting-content">
               <div class="waiting-animation">
@@ -136,6 +190,67 @@ import { WebrtcService } from '../../services/webrtc.service';
       overflow: hidden;
       position: relative;
     }
+
+    .lobby-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(5, 5, 20, 0.98);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .lobby-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .lobby-card h2 { color: #f0f0f5; font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .lobby-card p { color: #94a3b8; margin-bottom: 2rem; }
+
+    .lobby-video-container {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .lobby-video-container video {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    .lobby-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .join-btn {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .join-btn:hover { background: linear-gradient(135deg, #4f46e5, #4338ca); transform: translateY(-2px); }
 
     .connecting-overlay {
       position: fixed;
@@ -340,6 +455,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   // Signal-based viewChild queries (Angular 20)
   private localVideoEl = viewChild<ElementRef<HTMLVideoElement>>('localVideo');
   private remoteVideoEl = viewChild<ElementRef<HTMLVideoElement>>('remoteVideo');
+  private lobbyVideoEl = viewChild<ElementRef<HTMLVideoElement>>('lobbyVideo');
 
   // DI via inject()
   private route = inject(ActivatedRoute);
@@ -349,7 +465,8 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   // Component state — all signals
   readonly roomId = signal('');
-  readonly isConnecting = signal(true);
+  readonly isInLobby = signal(true);
+  readonly isConnecting = signal(false);
   readonly isAudioEnabled = signal(true);
   readonly isVideoEnabled = signal(true);
   readonly hasRemoteStream = signal(false);
@@ -365,10 +482,18 @@ export class RoomComponent implements OnInit, OnDestroy {
     // Effect: attach local stream to video element when both are available
     effect(() => {
       const el = this.localVideoEl();
-      if (el && this.pendingLocalStream) {
-        console.log('[Room] Effect: attaching local stream');
-        el.nativeElement.srcObject = this.pendingLocalStream;
-        el.nativeElement.play().catch(e => console.warn('Local autoplay:', e));
+      const lobbyEl = this.lobbyVideoEl();
+
+      if (this.pendingLocalStream) {
+        if (this.isInLobby() && lobbyEl) {
+          console.log('[Room] Effect: attaching local stream to lobby video');
+          lobbyEl.nativeElement.srcObject = this.pendingLocalStream;
+          lobbyEl.nativeElement.play().catch(e => console.warn('Lobby autoplay:', e));
+        } else if (!this.isInLobby() && el) {
+          console.log('[Room] Effect: attaching local stream to room grid video');
+          el.nativeElement.srcObject = this.pendingLocalStream;
+          el.nativeElement.play().catch(e => console.warn('Local autoplay:', e));
+        }
       }
     });
 
@@ -456,8 +581,9 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   private async initializeCall(): Promise<void> {
+    this.isConnecting.set(true);
     try {
-      // 1. Get local media (non-blocking)
+      // 1. Get local media (non-blocking) - wait for camera before entering lobby
       console.log('[Room] Requesting camera/mic access...');
       try {
         const stream = await this.webrtcService.initLocalStream();
@@ -468,8 +594,21 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.isAudioEnabled.set(false);
       }
 
+      this.isConnecting.set(false); // Stop "Getting Camera" spinner, show lobby
       this.webrtcService.setRoomId(this.roomId());
+    } catch (error: any) {
+      console.error('[Room] Init media failed:', error);
+      this.isConnecting.set(false);
+      alert('Failed to initialize media stream. Error: ' + (error.message || 'Unknown error'));
+      this.router.navigate(['/']);
+    }
+  }
 
+  async joinCall(): Promise<void> {
+    this.isInLobby.set(false);
+    this.isConnecting.set(true);
+
+    try {
       // 2. Connect SignalR
       console.log('[Room] Connecting to SignalR...');
       this.signalrService.buildConnection();
@@ -481,7 +620,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
       this.isConnecting.set(false);
       this.startTimer();
-      console.log('[Room] Initialization complete.');
+      console.log('[Room] Join complete.');
     } catch (error: any) {
       console.error('[Room] Init failed:', error);
 
