@@ -76,6 +76,14 @@ export class WebrtcService {
                 pc.addTrack(track, this.localStream!);
             });
             console.log('[WebRTC] Added local tracks to peer connection for', peerId);
+
+            // Ensure both audio and video transceivers exist even if local stream is missing one
+            if (!this.localStream.getVideoTracks().length) {
+                pc.addTransceiver('video', { direction: 'recvonly' });
+            }
+            if (!this.localStream.getAudioTracks().length) {
+                pc.addTransceiver('audio', { direction: 'recvonly' });
+            }
         } else {
             console.log('[WebRTC] No local stream available. Adding receive-only transceivers to accept incoming video/audio.');
             pc.addTransceiver('video', { direction: 'recvonly' });
@@ -125,10 +133,48 @@ export class WebrtcService {
         console.log('[WebRTC] Offer sent to', peerId);
     }
 
+    private pendingIceCandidates: Map<string, RTCIceCandidateInit[]> = new Map();
+
+    async handleIceCandidate(fromId: string, candidate: RTCIceCandidateInit): Promise<void> {
+        const pc = this.peerConnections.get(fromId);
+        if (pc) {
+            if (pc.remoteDescription) {
+                await pc.addIceCandidate(new RTCIceCandidate(candidate));
+            } else {
+                console.log(`[WebRTC] Queuing ICE candidate from ${fromId} (no remote description yet)`);
+                const queue = this.pendingIceCandidates.get(fromId) || [];
+                queue.push(candidate);
+                this.pendingIceCandidates.set(fromId, queue);
+            }
+        } else {
+            console.log(`[WebRTC] Queuing ICE candidate from ${fromId} (no PC yet)`);
+            const queue = this.pendingIceCandidates.get(fromId) || [];
+            queue.push(candidate);
+            this.pendingIceCandidates.set(fromId, queue);
+        }
+    }
+
+    private async processIceQueue(peerId: string, pc: RTCPeerConnection): Promise<void> {
+        const queue = this.pendingIceCandidates.get(peerId);
+        if (queue && queue.length > 0) {
+            console.log(`[WebRTC] Processing ${queue.length} queued ICE candidates for ${peerId}`);
+            for (const candidate of queue) {
+                try {
+                    await pc.addIceCandidate(new RTCIceCandidate(candidate));
+                } catch (e) {
+                    console.error('[WebRTC] Error adding queued ICE candidate', e);
+                }
+            }
+            this.pendingIceCandidates.delete(peerId);
+        }
+    }
+
     async handleOffer(fromId: string, sdp: RTCSessionDescriptionInit): Promise<void> {
         console.log('[WebRTC] Handling offer from', fromId);
         const pc = await this.createPeerConnection(fromId);
         await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+        await this.processIceQueue(fromId, pc);
+
         const answer = await pc.createAnswer();
         await pc.setLocalDescription(answer);
         await this.signalrService.sendAnswer(this.roomId, fromId, answer);
@@ -140,13 +186,7 @@ export class WebrtcService {
         if (pc) {
             console.log('[WebRTC] Setting remote description (answer) from', fromId);
             await pc.setRemoteDescription(new RTCSessionDescription(sdp));
-        }
-    }
-
-    async handleIceCandidate(fromId: string, candidate: RTCIceCandidateInit): Promise<void> {
-        const pc = this.peerConnections.get(fromId);
-        if (pc) {
-            await pc.addIceCandidate(new RTCIceCandidate(candidate));
+            await this.processIceQueue(fromId, pc);
         }
     }
 
