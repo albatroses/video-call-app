@@ -76,6 +76,10 @@ export class WebrtcService {
                 pc.addTrack(track, this.localStream!);
             });
             console.log('[WebRTC] Added local tracks to peer connection for', peerId);
+        } else {
+            console.log('[WebRTC] No local stream available. Adding receive-only transceivers to accept incoming video/audio.');
+            pc.addTransceiver('video', { direction: 'recvonly' });
+            pc.addTransceiver('audio', { direction: 'recvonly' });
         }
 
         // Handle incoming remote tracks

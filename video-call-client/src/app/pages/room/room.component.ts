@@ -39,18 +39,23 @@ import { WebrtcService } from '../../services/webrtc.service';
       </div>
 
       <!-- Video grid -->
-      <div class="video-grid" [class.single]="!hasRemoteStream()" [class.multi]="hasRemoteStream()">
+      <div class="video-grid" [class.single]="participantCount() < 2" [class.multi]="participantCount() >= 2">
         <!-- Remote video — always in DOM, CSS controlled -->
-        <div class="video-wrapper remote-video" [class.visible]="hasRemoteStream()" [class.hidden]="!hasRemoteStream()">
+        <div class="video-wrapper remote-video" [class.visible]="participantCount() >= 2" [class.hidden]="participantCount() < 2">
           <video #remoteVideo autoplay playsinline></video>
           <div class="video-label">
             <span class="dot online"></span>
             Participant
           </div>
+          @if (!hasRemoteStream() && participantCount() >= 2) {
+            <div class="no-video-overlay">
+              <div class="avatar">P</div>
+            </div>
+          }
         </div>
 
         <!-- Local video -->
-        <div class="video-wrapper local-video" [class.pip]="hasRemoteStream()">
+        <div class="video-wrapper local-video" [class.pip]="participantCount() >= 2">
           <video #localVideo autoplay playsinline muted></video>
           <div class="video-label">
             <span class="dot online"></span>
@@ -64,7 +69,7 @@ import { WebrtcService } from '../../services/webrtc.service';
         </div>
 
         <!-- Waiting state -->
-        @if (!hasRemoteStream() && !isConnecting()) {
+        @if (participantCount() < 2 && !isConnecting()) {
           <div class="waiting-panel">
             <div class="waiting-content">
               <div class="waiting-animation">
