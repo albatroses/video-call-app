@@ -45,7 +45,7 @@ export class SignalrService {
             console.log('[SignalR] Connected. ID:', this.hubConnection.connectionId);
         } catch (err) {
             console.error('[SignalR] Connection error:', err);
-            setTimeout(() => this.startConnection(), 3000);
+            throw err; // Throw instead of infinite silent loop
         }
     }
 

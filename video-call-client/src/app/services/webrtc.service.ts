@@ -28,18 +28,17 @@ export class WebrtcService {
 
     async initLocalStream(): Promise<MediaStream> {
         try {
-            this.localStream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 },
-                    facingMode: 'user'
-                },
-                audio: {
-                    echoCancellation: true,
-                    noiseSuppression: true,
-                    autoGainControl: true
-                }
+            // Wrap in a promise that rejects after 10 seconds if user ignores the prompt
+            const getStreamPromise = navigator.mediaDevices.getUserMedia({
+                video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: 'user' },
+                audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
             });
+
+            const timeoutPromise = new Promise<MediaStream>((_, reject) =>
+                setTimeout(() => reject(new Error('Media access timeout')), 10000)
+            );
+
+            this.localStream = await Promise.race([getStreamPromise, timeoutPromise]);
             console.log('[WebRTC] Local stream acquired:', this.localStream.getTracks().map(t => `${t.kind}:${t.label}`));
             return this.localStream;
         } catch (error) {

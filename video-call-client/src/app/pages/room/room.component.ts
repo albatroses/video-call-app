@@ -452,11 +452,18 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   private async initializeCall(): Promise<void> {
     try {
-      // 1. Get local media
+      // 1. Get local media (non-blocking)
       console.log('[Room] Requesting camera/mic access...');
-      const stream = await this.webrtcService.initLocalStream();
+      try {
+        const stream = await this.webrtcService.initLocalStream();
+        this.pendingLocalStream = stream;
+      } catch (mediaError) {
+        console.warn('[Room] Could not get camera/mic. Joining without media.', mediaError);
+        this.isVideoEnabled.set(false);
+        this.isAudioEnabled.set(false);
+      }
+
       this.webrtcService.setRoomId(this.roomId());
-      this.pendingLocalStream = stream;
 
       // 2. Connect SignalR
       console.log('[Room] Connecting to SignalR...');
@@ -470,18 +477,22 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.isConnecting.set(false);
       this.startTimer();
       console.log('[Room] Initialization complete.');
-    } catch (error) {
+    } catch (error: any) {
       console.error('[Room] Init failed:', error);
-      this.isConnecting.set(false);
 
       // Try SignalR-only fallback (no camera)
       try {
+        console.log('[Room] Attempting SignalR fallback...');
         this.signalrService.buildConnection();
         await this.signalrService.startConnection();
         await this.signalrService.joinRoom(this.roomId());
+        this.isConnecting.set(false);
         this.startTimer();
-      } catch (innerError) {
+      } catch (innerError: any) {
         console.error('[Room] SignalR fallback also failed:', innerError);
+        this.isConnecting.set(false);
+        alert('Failed to connect to the video call server. Please check your network and try again. Error: ' + (error.message || innerError.message || 'Unknown error'));
+        this.router.navigate(['/']);
       }
     }
   }
