@@ -1,0 +1,45 @@
+{"Timestamp":"2026-02-20T21:44:55.3536041Z","EventType":"ROOM_CREATED","RoomId":"9ab5acf8516d","ConnectionId":"","IpAddress":"","Details":"Room created with 2-hour expiry"}
+{"Timestamp":"2026-02-20T21:46:23.8305977Z","EventType":"CODE_REJECTED","RoomId":"9ab5acf8516d","ConnectionId":"","IpAddress":"::1","Details":"Invalid secret code attempt"}
+{"Timestamp":"2026-02-20T21:46:38.8975849Z","EventType":"CODE_VERIFIED","RoomId":"9ab5acf8516d","ConnectionId":"","IpAddress":"::1","Details":"Secret code verified successfully"}
+{"Timestamp":"2026-02-20T21:47:48.6290447Z","EventType":"USER_JOINED","RoomId":"9ab5acf8516d","ConnectionId":"tW4dE4qz6rviEc0jqupZSA","IpAddress":"::1","Details":"User joined. Total users: 1"}
+{"Timestamp":"2026-02-20T21:48:40.4570242Z","EventType":"USER_LEFT","RoomId":"9ab5acf8516d","ConnectionId":"tW4dE4qz6rviEc0jqupZSA","IpAddress":"::1","Details":"User disconnected. Remaining users: 0"}
+{"Timestamp":"2026-02-20T21:48:42.0863388Z","EventType":"ROOM_CREATED","RoomId":"b556d1ed0b81","ConnectionId":"","IpAddress":"","Details":"Room created with 2-hour expiry"}
+{"Timestamp":"2026-02-20T21:48:52.7220606Z","EventType":"USER_JOINED","RoomId":"b556d1ed0b81","ConnectionId":"QakQXHyeDL-fzm9JWfObUQ","IpAddress":"::1","Details":"User joined. Total users: 1"}
+{"Timestamp":"2026-02-20T21:49:03.7427868Z","EventType":"USER_LEFT","RoomId":"b556d1ed0b81","ConnectionId":"QakQXHyeDL-fzm9JWfObUQ","IpAddress":"::1","Details":"User disconnected. Remaining users: 0"}
+{"Timestamp":"2026-02-20T21:51:45.0590746Z","EventType":"ROOM_CREATED","RoomId":"7d62a790ad03","ConnectionId":"","IpAddress":"","Details":"Room created with 2-hour expiry"}
+{"Timestamp":"2026-02-20T21:52:19.2711674Z","EventType":"USER_JOINED","RoomId":"7d62a790ad03","ConnectionId":"qdXWeuVaf2Px8OpYmzsumQ","IpAddress":"::1","Details":"User joined. Total users: 1"}
+{"Timestamp":"2026-02-20T21:52:44.3270752Z","EventType":"CODE_VERIFIED","RoomId":"7d62a790ad03","ConnectionId":"","IpAddress":"::1","Details":"Secret code verified successfully"}
+{"Timestamp":"2026-02-20T21:52:44.626465Z","EventType":"USER_JOINED","RoomId":"7d62a790ad03","ConnectionId":"G9CyS3tX_yIFx9T8S4KBjw","IpAddress":"::1","Details":"User joined. Total users: 2"}
+{"Timestamp":"2026-02-20T21:54:58.5739091Z","EventType":"USER_LEFT","RoomId":"7d62a790ad03","ConnectionId":"G9CyS3tX_yIFx9T8S4KBjw","IpAddress":"::1","Details":"User disconnected. Remaining users: 1"}
+{"Timestamp":"2026-02-20T21:55:08.4178602Z","EventType":"USER_LEFT","RoomId":"7d62a790ad03","ConnectionId":"qdXWeuVaf2Px8OpYmzsumQ","IpAddress":"::1","Details":"User disconnected. Remaining users: 0"}
+{"Timestamp":"2026-02-20T21:55:10.4212413Z","EventType":"ROOM_CREATED","RoomId":"81184adb986a","ConnectionId":"","IpAddress":"","Details":"Room created with 2-hour expiry"}
+{"Timestamp":"2026-02-20T21:55:20.7099483Z","EventType":"CODE_REJECTED","RoomId":"81184adb986a","ConnectionId":"","IpAddress":"::1","Details":"Invalid secret code attempt"}
+{"Timestamp":"2026-02-20T21:55:22.6032174Z","EventType":"CODE_VERIFIED","RoomId":"81184adb986a","ConnectionId":"","IpAddress":"::1","Details":"Secret code verified successfully"}
+{"Timestamp":"2026-02-20T21:55:23.1030171Z","EventType":"USER_JOINED","RoomId":"81184adb986a","ConnectionId":"1EI6x9juVPYNvpm5z45Fmg","IpAddress":"::1","Details":"User joined. Total users: 1"}
+{"Timestamp":"2026-02-20T21:55:29.789159Z","EventType":"USER_JOINED","RoomId":"81184adb986a","ConnectionId":"tPjp9iN5RtcSzezuw5GWfw","IpAddress":"::1","Details":"User joined. Total users: 2"}
+{"Timestamp":"2026-02-20T21:57:57.791046Z","EventType":"USER_LEFT","RoomId":"81184adb986a","ConnectionId":"tPjp9iN5RtcSzezuw5GWfw","IpAddress":"::1","Details":"User disconnected. Remaining users: 1"}
+{"Timestamp":"2026-02-20T21:57:57.8235536Z","EventType":"USER_LEFT","RoomId":"81184adb986a","ConnectionId":"1EI6x9juVPYNvpm5z45Fmg","IpAddress":"::1","Details":"User disconnected. Remaining users: 0"}
+{"Timestamp":"2026-02-20T21:57:58.6926255Z","EventType":"USER_JOINED","RoomId":"81184adb986a","ConnectionId":"PNrOYOAzDnB7f9yDDbLKog","IpAddress":"::1","Details":"User joined. Total users: 1"}
+{"Timestamp":"2026-02-20T21:57:58.7082093Z","EventType":"USER_JOINED","RoomId":"81184adb986a","ConnectionId":"lueklbB4Nv2SGYFCVpUWeg","IpAddress":"::1","Details":"User joined. Total users: 2"}
+{"Timestamp":"2026-02-20T21:58:05.4192685Z","EventType":"USER_LEFT","RoomId":"81184adb986a","ConnectionId":"PNrOYOAzDnB7f9yDDbLKog","IpAddress":"::1","Details":"User disconnected. Remaining users: 1"}
+{"Timestamp":"2026-02-20T21:58:07.1627111Z","EventType":"USER_LEFT","RoomId":"81184adb986a","ConnectionId":"lueklbB4Nv2SGYFCVpUWeg","IpAddress":"::1","Details":"User disconnected. Remaining users: 0"}
+{"Timestamp":"2026-02-20T21:59:15.8083221Z","EventType":"ROOM_CREATED","RoomId":"db62a73b80d3","ConnectionId":"","IpAddress":"","Details":"Room created with 2-hour expiry"}
+{"Timestamp":"2026-02-20T21:59:30.964483Z","EventType":"USER_JOINED","RoomId":"db62a73b80d3","ConnectionId":"hn8L2Gyle3-TDDtaZkwH7Q","IpAddress":"::1","Details":"User joined. Total users: 1"}
+{"Timestamp":"2026-02-20T21:59:49.0412873Z","EventType":"CODE_VERIFIED","RoomId":"db62a73b80d3","ConnectionId":"","IpAddress":"::1","Details":"Secret code verified successfully"}
+{"Timestamp":"2026-02-20T21:59:49.4992793Z","EventType":"USER_JOINED","RoomId":"db62a73b80d3","ConnectionId":"SkNKmjaBxOZlyPE3vi7XTQ","IpAddress":"::1","Details":"User joined. Total users: 2"}
+{"Timestamp":"2026-02-20T22:02:51.2625914Z","EventType":"USER_LEFT","RoomId":"db62a73b80d3","ConnectionId":"SkNKmjaBxOZlyPE3vi7XTQ","IpAddress":"::1","Details":"User disconnected. Remaining users: 1"}
+{"Timestamp":"2026-02-20T22:02:54.4409084Z","EventType":"USER_LEFT","RoomId":"db62a73b80d3","ConnectionId":"hn8L2Gyle3-TDDtaZkwH7Q","IpAddress":"::1","Details":"User disconnected. Remaining users: 0"}
+{"Timestamp":"2026-02-20T22:03:02.4161779Z","EventType":"ROOM_CREATED","RoomId":"1cdf43690a10","ConnectionId":"","IpAddress":"","Details":"Room created with 2-hour expiry"}
+{"Timestamp":"2026-02-20T22:10:24.1606786Z","EventType":"ROOM_CREATED","RoomId":"03880076dc89","ConnectionId":"","IpAddress":"","Details":"Room created with 2-hour expiry"}
+{"Timestamp":"2026-02-20T22:10:45.692466Z","EventType":"USER_JOINED","RoomId":"03880076dc89","ConnectionId":"DPJdv4HP1VtqzCdUt0-WeQ","IpAddress":"::1","Details":"User joined. Total users: 1"}
+{"Timestamp":"2026-02-20T22:11:09.0499852Z","EventType":"CODE_VERIFIED","RoomId":"03880076dc89","ConnectionId":"","IpAddress":"::1","Details":"Secret code verified successfully"}
+{"Timestamp":"2026-02-20T22:11:09.3708313Z","EventType":"USER_JOINED","RoomId":"03880076dc89","ConnectionId":"pFhupgN1PaBAkUApxQeamg","IpAddress":"::1","Details":"User joined. Total users: 2"}
+{"Timestamp":"2026-02-20T22:13:30.5729583Z","EventType":"USER_LEFT","RoomId":"03880076dc89","ConnectionId":"pFhupgN1PaBAkUApxQeamg","IpAddress":"::1","Details":"User disconnected. Remaining users: 1"}
+{"Timestamp":"2026-02-20T22:13:31.7029391Z","EventType":"USER_LEFT","RoomId":"03880076dc89","ConnectionId":"DPJdv4HP1VtqzCdUt0-WeQ","IpAddress":"::1","Details":"User disconnected. Remaining users: 0"}
+{"timestamp":"2026-02-20T22:18:33.126917Z","eventType":"ROOM_CREATED","roomId":"2b54a450cbcc","connectionId":"","ipAddress":"","details":"Room created with 2-hour expiry"}
+{"timestamp":"2026-02-20T22:18:49.4901138Z","eventType":"CODE_VERIFIED","roomId":"2b54a450cbcc","connectionId":"","ipAddress":"::1","details":"Secret code verified successfully"}
+{"timestamp":"2026-02-20T22:18:50.1045352Z","eventType":"USER_JOINED","roomId":"2b54a450cbcc","connectionId":"RMid1tulvp-7FKZV7pDxYA","ipAddress":"::1","details":"User joined. Total users: 1"}
+{"timestamp":"2026-02-20T22:19:02.9558892Z","eventType":"USER_JOINED","roomId":"2b54a450cbcc","connectionId":"AjW4VrD2-YmS8f5A1HwS8w","ipAddress":"::1","details":"User joined. Total users: 2"}
+{"timestamp":"2026-02-20T22:21:34.9573813Z","eventType":"USER_LEFT","roomId":"2b54a450cbcc","connectionId":"RMid1tulvp-7FKZV7pDxYA","ipAddress":"::1","details":"User disconnected. Remaining users: 1"}
+{"timestamp":"2026-02-20T22:21:34.9614507Z","eventType":"USER_LEFT","roomId":"2b54a450cbcc","connectionId":"AjW4VrD2-YmS8f5A1HwS8w","ipAddress":"::1","details":"User disconnected. Remaining users: 0"}
+{"timestamp":"2026-02-21T00:22:16.3202782Z","eventType":"ROOM_EXPIRED","roomId":"2b54a450cbcc","connectionId":"","ipAddress":"","details":"Room auto-expired after 2 hours"}
