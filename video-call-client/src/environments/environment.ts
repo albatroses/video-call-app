@@ -1,5 +1,6 @@
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:5000/api',
-  hubUrl: 'http://localhost:5000/callhub'
+  production: true,
+  apiUrl: 'https://video-call-app-wyle.onrender.com/api',
+  hubUrl: 'https://video-call-app-wyle.onrender.com/callhub',
+  chatHubUrl: 'https://video-call-app-wyle.onrender.com/chatHub'
 };
