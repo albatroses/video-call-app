@@ -4,6 +4,7 @@ using VideoCallApi.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseWebRoot("wwwroot");
 
 // Register EF Core DbContext (PostgreSQL)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

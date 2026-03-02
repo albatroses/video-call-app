@@ -19,7 +19,8 @@ namespace VideoCallApi.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded.");
 
-            var uploadsRoot = Path.Combine(_env.WebRootPath, "uploads");
+            var webRoot = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            var uploadsRoot = Path.Combine(webRoot, "uploads");
             Directory.CreateDirectory(uploadsRoot);
 
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
