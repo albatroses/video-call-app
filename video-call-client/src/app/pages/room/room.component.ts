@@ -2,10 +2,13 @@ import { Component, OnInit, OnDestroy, viewChild, ElementRef, signal, computed, 
 import { ActivatedRoute, Router } from '@angular/router';
 import { SignalrService } from '../../services/signalr.service';
 import { WebrtcService } from '../../services/webrtc.service';
+import { ChatComponent } from '../../components/chat/chat.component';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-room',
   standalone: true,
+  imports: [ChatComponent],
   template: `
     <div class="room-container">
       <!-- Pre-call Lobby Overlay -->
@@ -179,7 +182,20 @@ import { WebrtcService } from '../../services/webrtc.service';
             <path d="M10.68 13.31a16 16 0 003.41 2.6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7 2 2 0 011.72 2v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l-3.41-2.6z"/>
           </svg>
         </button>
+
+        <button class="control-btn" [class.on]="isChatOpen()" (click)="toggleChat()" title="Toggle Chat">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        </button>
       </div>
+
+      <!-- Chat Sidebar -->
+      @if (isChatOpen()) {
+        <div class="chat-sidebar">
+          <app-chat [roomId]="roomId()" [myConnectionId]="getMyConnectionId"></app-chat>
+        </div>
+      }
     </div>
   `,
   styles: [`
@@ -449,6 +465,25 @@ import { WebrtcService } from '../../services/webrtc.service';
       .top-bar { padding: 0.5rem 1rem; }
       .room-id { display: none; }
     }
+
+    .chat-sidebar {
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 350px;
+      max-width: 100%;
+      z-index: 50;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    .control-btn.on {
+      background: #4f46e5;
+      color: white;
+    }
   `]
 })
 export class RoomComponent implements OnInit, OnDestroy {
@@ -462,6 +497,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private signalrService = inject(SignalrService);
   private webrtcService = inject(WebrtcService);
+  private chatService = inject(ChatService);
 
   // Component state — all signals
   readonly roomId = signal('');
@@ -472,6 +508,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   readonly hasRemoteStream = signal(false);
   readonly participantCount = signal(1);
   readonly callDuration = signal('00:00');
+  readonly isChatOpen = signal(false);
 
   private timerInterval: ReturnType<typeof setInterval> | null = null;
   private callStartTime: Date | null = null;
@@ -655,6 +692,14 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.cleanup();
     this.router.navigate(['/']);
   }
+
+  toggleChat(): void {
+    this.isChatOpen.update(v => !v);
+  }
+
+  getMyConnectionId = () => {
+    return this.signalrService.getConnectionId() || '';
+  };
 
   private startTimer(): void {
     this.callStartTime = new Date();
