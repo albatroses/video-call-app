@@ -1,9 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
-COPY ["VideoCallApi.csproj", "./"]
-RUN dotnet restore "VideoCallApi.csproj"
-COPY . .
-WORKDIR "/src/"
+COPY ["VideoCallApi/VideoCallApi.csproj", "VideoCallApi/"]
+RUN dotnet restore "VideoCallApi/VideoCallApi.csproj"
+COPY VideoCallApi/ VideoCallApi/
+WORKDIR "/src/VideoCallApi"
 RUN dotnet build "VideoCallApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
