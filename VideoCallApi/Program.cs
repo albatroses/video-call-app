@@ -36,7 +36,7 @@ app.UseStaticFiles(); // Serve uploaded files from wwwroot/uploads
 app.UseRouting();
 app.MapControllers();
 app.MapHub<CallHub>("/callhub");
-app.MapHub<ChatHub>("/chathub");
+app.MapHub<ChatHub>("/ChatHub");
 
 app.Logger.LogInformation("""
     ===========================================
